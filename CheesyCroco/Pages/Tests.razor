@@ -1,0 +1,50 @@
+﻿@page "/tests"
+@using CheesyCroco.Data
+
+<PageTitle>Tests</PageTitle>
+
+<h1>Cheesy Croco Tests</h1>
+
+
+<p>There is the test list.</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Test rate</th>
+            <th>Test pass number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var test in tests)
+        {
+            <tr>
+                <td>
+                    <NavLink class="btn btn-square" href="testpage">@test.Name</NavLink>
+                </td>
+                <td>@test.Rate</td>
+                <td>@test.PassCounter</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private Test[]? tests;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
+            {
+                Name = "Test name (click on me)",
+                Rate = 5,
+                PassCounter = 100000000
+            }).ToArray());
+    }
+    private void SendToTest()
+    {
+        
+    }
+}
