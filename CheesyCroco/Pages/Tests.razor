@@ -22,10 +22,10 @@
         {
             <tr>
                 <td>
-                    <NavLink class="btn btn-square" href="testpage">@test.Name</NavLink>
+                    <NavLink class="btn btn-square" href="testpage">@test.name</NavLink>
                 </td>
-                <td>@test.Rate</td>
-                <td>@test.PassCounter</td>
+                <td>@test.rate</td>
+                <td>@test.passCounter</td>
             </tr>
         }
     </tbody>
@@ -36,12 +36,21 @@
 
     protected override async Task OnInitializedAsync()
     {
-        tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
-            {
-                Name = "Test name (click on me)",
-                Rate = 5,
-                PassCounter = 100000000
-            }).ToArray());
+        TestService ts = new TestService();
+        if (ts.connect())
+            tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
+                {
+                    name = "Test name (click on me)",
+                    rate = 5,
+                    passCounter = 100000000
+                }).ToArray());
+        else
+            tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
+                {
+                    name = "Test name (click on me)",
+                    rate = 0,
+                    passCounter = 0
+                }).ToArray());
     }
     private void SendToTest()
     {

@@ -2,10 +2,10 @@
 {
     public class Test
     {
-        public string Name { get; set; }
+        public string name { get; set; }
 
-        public float Rate { get; set; }
+        public float rate { get; set; }
 
-        public int PassCounter { get; set; }
+        public int passCounter { get; set; }
     }
 }
