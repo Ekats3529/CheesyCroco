@@ -1,11 +1,17 @@
-﻿namespace CheesyCroco.Data
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace CheesyCroco.Data
 {
     public class Test
     {
-        public string name { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+        public string name { get; set; } = "";
 
-        public float rate { get; set; }
+        public double rate { get; set; } = 0;
 
-        public int passCounter { get; set; }
+        public int passCounter { get; set; } = 0;
     }
 }

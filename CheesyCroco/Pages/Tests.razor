@@ -1,5 +1,6 @@
 ﻿@page "/tests"
 @using CheesyCroco.Data
+@inject TestService testService
 
 <PageTitle>Tests</PageTitle>
 
@@ -8,42 +9,42 @@
 
 <p>There is the test list.</p>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Test rate</th>
-            <th>Test pass number</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var test in tests)
-        {
+@if (tests == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    <NavLink class="btn btn-square" href="testpage">@test.name</NavLink>
-                </td>
-                <td>@test.rate</td>
-                <td>@test.passCounter</td>
+                <th>Name</th>
+                <th>Test rate</th>
+                <th>Test pass number</th>
             </tr>
-        }
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            @foreach (var test in tests)
+            {
+                <tr>
+                    <td>
+                        <NavLink class="btn btn-square" href="testpage">@test.name</NavLink>
+                    </td>
+                    <td>@test.rate</td>
+                    <td>@test.passCounter</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 @code {
     private Test[]? tests;
 
     protected override async Task OnInitializedAsync()
     {
-        TestService ts = new TestService();
-        if (ts.connect())
-            tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
-                {
-                    name = "Test name (click on me)",
-                    rate = 5,
-                    passCounter = 100000000
-                }).ToArray());
+        
+        if (testService.connect())
+            tests = await testService.GetTestAsyncTrue();
         else
             tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
                 {
@@ -51,9 +52,5 @@
                     rate = 0,
                     passCounter = 0
                 }).ToArray());
-    }
-    private void SendToTest()
-    {
-        
     }
 }
