@@ -1,15 +1,15 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Bson;
 using System;
+using CheesyCroco.Data.Models;
 
-
-namespace CheesyCroco.Data
+namespace CheesyCroco.Data.Services
 {
-    public class AnswerService
+    public class TestService
     {
 
-        public List<Answer> answers;
-        public Boolean connect()
+        public List<Test> tests;
+        public bool connect()
         {
             const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
 
@@ -19,15 +19,15 @@ namespace CheesyCroco.Data
             // Create a new client and connect to the server
             var client = new MongoClient(settings);
             //
-            
+
             // Send a ping to confirm a successful connection
             try
             {
                 //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
                 var database = client.GetDatabase("CheesyDB");
-                var collection = database.GetCollection<Answer>("Answers");
+                var collection = database.GetCollection<Test>("Tests");
 
-                answers = collection.Find(_ => true).ToList<Answer>();
+                tests = collection.Find(_ => true).ToList();
 
                 return true;
             }
@@ -36,9 +36,9 @@ namespace CheesyCroco.Data
                 return false;
             }
         }
-        public Task<Answer[]> GetTestAsync()
+        public Task<Test[]> GetTestAsync()
         {
-            return Task.FromResult(answers.ToArray());
+            return Task.FromResult(tests.ToArray());
         }
     }
 }

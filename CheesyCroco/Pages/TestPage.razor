@@ -1,5 +1,63 @@
 ﻿@page "/testpage"
+@using CheesyCroco.Data.Models
+@using CheesyCroco.Data.Services
+@inject QuestionService questionService
+@inject AnswerService answerService
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Tests</PageTitle>
 
-<h1>You will pass the test here someday</h1>
+<h1>Cheesy Croco Tests</h1>
+
+
+<p>There is the test list.</p>
+
+@if (questions == null || answers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul> 
+        @foreach (var question in questions)
+        {
+            <li>
+                <td>@question.text</td>
+                <ul>
+                @foreach (var answer in answers)
+                {
+                        if (answer.questionId == question.Id)
+                        {
+                            <li> @answer.text </li>
+
+                        }
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+}
+@code {
+    private Question[] questions;
+    private Answer[] answers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (questionService.connect() && answerService.connect())
+        {
+            questions = await questionService.GetTestAsync();
+            answers = await answerService.GetTestAsync();
+        }
+        else
+        {
+            questions = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Question
+                {
+                    text = "",
+                    testId = "",
+                    answersNum = 0,
+                    questionIndex = 0
+
+                }).ToArray());
+        }
+    }
+}
