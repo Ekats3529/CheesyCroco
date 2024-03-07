@@ -3,19 +3,19 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace CheesyCroco.Data
 {
-    public class Test
+    public class Result
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+
+        public string testId { get; set; } = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
         
         public string name { get; set; } = "";
 
-        public int rateSum { get; set; } = 0;
-       
-        public int rateNum { get; set; } = 0;
-        public int questionsNum { get; set; } = 0;
+        public string text { get; set; } = "";
 
-        public int passCounter { get; set; } = 0;
+        public int scoreLimit { get; set; } = 0;
+        public int userCount { get; set; } = 0;
     }
 }

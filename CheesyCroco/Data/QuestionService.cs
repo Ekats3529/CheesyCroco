@@ -5,10 +5,10 @@ using System;
 
 namespace CheesyCroco.Data
 {
-    public class TestService
+    public class QuestionService
     {
 
-        public List<Test> tests;
+        public List<Question> questions;
         public Boolean connect()
         {
             const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
@@ -25,9 +25,9 @@ namespace CheesyCroco.Data
             {
                 //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
                 var database = client.GetDatabase("CheesyDB");
-                var collection = database.GetCollection<Test>("Tests");
+                var collection = database.GetCollection<Question>("Questions");
 
-                tests = collection.Find(_ => true).ToList<Test>();
+                questions = collection.Find(_ => true).ToList<Question>();
 
                 return true;
             }
@@ -36,9 +36,9 @@ namespace CheesyCroco.Data
                 return false;
             }
         }
-        public Task<Test[]> GetTestAsync()
+        public Task<Question[]> GetTestAsync()
         {
-            return Task.FromResult(tests.ToArray());
+            return Task.FromResult(questions.ToArray());
         }
     }
 }

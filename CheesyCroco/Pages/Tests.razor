@@ -15,12 +15,14 @@
 }
 else
 {
+    <meta> @tests.Length <meta>
     <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Test rate</th>
                 <th>Test pass number</th>
+                <th>Test rate</th>
+                <th>Number of questions</th>
             </tr>
         </thead>
         <tbody>
@@ -30,27 +32,36 @@ else
                     <td>
                         <NavLink class="btn btn-square" href="testpage">@test.name</NavLink>
                     </td>
-                    <td>@test.rate</td>
                     <td>@test.passCounter</td>
+                    <td>@GetTestRate(test.rateSum, test.rateNum)</td>
+                    <td>@test.questionsNum</td>
                 </tr>
             }
         </tbody>
     </table>
 }
 @code {
-    private Test[]? tests;
+    private Test[] tests;
+
+    protected double GetTestRate(int a, int b)
+    {
+        return 1.0 * a / b;
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        
-        if (testService.connect())
-            tests = await testService.GetTestAsyncTrue();
-        else
+        if (testService.connect()){
+            tests = await testService.GetTestAsync();
+        }
+        else{
             tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test
                 {
                     name = "Test name (click on me)",
-                    rate = 0,
+                    rateNum = 0,
+                    rateSum = 1,
+                    questionsNum = 1,
                     passCounter = 0
                 }).ToArray());
+        }
     }
 }
