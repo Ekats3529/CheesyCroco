@@ -21,25 +21,34 @@ else
         @foreach (var question in questions)
         {
             <li>
-                <td>@question.text</td>
-                <ul>
+                <td>@question.text</td>  
                 @foreach (var answer in answers)
                 {
-                        if (answer.questionId == question.Id)
-                        {
-                            <li> @answer.text </li>
-
-                        }
+                    if (answer.questionId == question.Id)
+                    {
+                        <button class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
+                            @answer.text
+                        </button>
                     }
-                </ul>
+                }
             </li>
         }
-
     </ul>
+
+    <button class="btn btn-primary">
+        Узнать результат
+        @attemptRates[0]
+        @attemptRates[1]
+        @attemptRates[2]
+    </button>
 }
+
+
+
 @code {
     private Question[] questions;
     private Answer[] answers;
+    private int[] attemptRates;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,6 +56,7 @@ else
         {
             questions = await questionService.GetTestAsync();
             answers = await answerService.GetTestAsync();
+            attemptRates = new int[questions.Length];
         }
         else
         {
@@ -60,4 +70,7 @@ else
                 }).ToArray());
         }
     }
+
+
+   
 }
