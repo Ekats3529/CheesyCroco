@@ -1,0 +1,94 @@
+﻿.tests_row {
+    display: flex;
+    line-height: 1.5;
+    text-align: left;
+    text-align: match-parent;
+    justify-content: space-between;
+}
+
+.test_item {
+    background: var(--bgblack);
+    margin-bottom: 0;
+    position: relative;
+    border-radius: 10px;
+    transition: all .1s linear;
+    box-shadow: 0 0 0 1px var(--bgblack);
+    width: 400px;
+    height: 100%;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid;
+    padding-left: 15px;
+}
+
+.test_item-bottom {
+    display: flex;
+    border-top: 1px solid var(--bggray);
+    margin: 0 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: match-parent;
+}
+
+.test_item-questionsNum {
+    padding-left: 25px;
+    background-size: 20px;
+    margin-right: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    background-image: url('images/quiz.svg');
+    background-repeat: no-repeat;
+    cursor: default;
+    display: flex;
+    background-position: left center;
+}
+
+.test_item-passes {
+    padding-left: 25px;
+    background-size: 20px;
+    margin-right: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    background-image: url('images/passes.svg');
+    background-repeat: no-repeat;
+    cursor: default;
+    display: flex;
+    background-position: left center;
+}
+
+.test_item-rating {
+    padding-left: 25px;
+    background-size: 20px;
+    margin-right: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    background-image: url('images/rate.svg');
+    background-repeat: no-repeat;
+    cursor: default;
+    display: flex;
+    background-position: left center;
+}
+
+
+.test_item-title h3 a {
+    padding-left: 30px;
+    color: black;
+    font-weight: 700;
+    font-size: 20px;
+    word-break: break-word;
+    line-height: 30px;
+    text-decoration: none;
+}
+
+    .test_item-title h3 a:hover {
+        color: #a68d03;
+        text-decoration: none;
+    }
+
+:root {
+    --bgblack: #3A454B;
+}

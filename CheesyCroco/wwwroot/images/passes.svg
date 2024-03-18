@@ -1,0 +1,18 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="people">
+        <g id="2 User">
+            <path id="Stroke 1" fill-rule="evenodd" clip-rule="evenodd"
+                  d="M9.66441 15.6466C13.2577 15.6466 16.3288 16.1911 16.3288 18.3662C16.3288 20.5412 13.2781 21.1013 9.66441 21.1013C6.07019 21.1013 3 20.5617 3 18.3856C3 16.2096 6.04973 15.6466 9.66441 15.6466Z"
+                  stroke="#7D8488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="Stroke 3" fill-rule="evenodd" clip-rule="evenodd"
+                  d="M9.66474 12.5424C7.3056 12.5424 5.39258 10.6303 5.39258 8.27119C5.39258 5.91205 7.3056 4 9.66474 4C12.0229 4 13.9359 5.91205 13.9359 8.27119C13.9447 10.6216 12.0453 12.5336 9.69493 12.5424H9.66474Z"
+                  stroke="#7D8488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="Stroke 5"
+                  d="M16.377 11.4337C17.9364 11.2146 19.1374 9.87622 19.1403 8.25639C19.1403 6.65993 17.9763 5.33523 16.45 5.0849"
+                  stroke="#7D8488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="Stroke 7"
+                  d="M18.4346 15.1844C19.9453 15.4094 21.0002 15.9392 21.0002 17.0302C21.0002 17.7812 20.5034 18.2682 19.7008 18.5731"
+                  stroke="#7D8488" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+    </g>
+</svg>

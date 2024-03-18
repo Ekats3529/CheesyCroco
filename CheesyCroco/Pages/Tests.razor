@@ -8,7 +8,7 @@
 <h1>Cheesy Croco Tests</h1>
 
 
-<p>There is the test list.</p>
+@* <p>There is the test list.</p> *@
 
 @if (tests == null)
 {
@@ -16,7 +16,7 @@
 }
 else
 {
-    <meta> @tests.Length <meta>
+  @*   <meta> @tests.Length <meta>
     <table class="table">
         <thead>
             <tr>
@@ -39,7 +39,31 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </table> *@
+    @for (int i =0; i < tests.Length / 3; i++)
+    {
+        <div class="tests_row">
+            @for (int j = 0; j < 3; j++)
+            {
+                <div class="test_item">
+                    <div class="test_item-title">
+                        <h3>
+                            <a href="testpage"> @tests[i + j].name</a>
+                        </h3>
+                    </div>
+
+                    <div class="test_item-bottom">
+                        <div class="test_item-questionsNum" title="Оценка по 10-бальной шкале">@tests[i + j].questionsNum</div>
+                        <div class="test_item-rating" title="Количество прохождений">@GetTestRate(tests[i + j].rateSum, tests[i + j].rateNum)</div>
+                        <div class="test_item-passes" title="">@tests[i + j].passCounter</div>
+                    </div>
+                    
+                    
+                </div>
+            }
+        </div>
+    }
+   
 }
 @code {
     private Test[] tests;
