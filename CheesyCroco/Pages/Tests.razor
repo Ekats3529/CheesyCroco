@@ -45,10 +45,10 @@ else
         <div class="tests_row">
             @for (int j = 0; j < 3; j++)
             {
-                <div class="test_item">
+                <div class="test_item" onclick="location.href='testpage';">
                     <div class="test_item-title">
                         <h3>
-                            <a href="testpage"> @tests[i + j].name</a>
+                            @tests[i + j].name
                         </h3>
                     </div>
 

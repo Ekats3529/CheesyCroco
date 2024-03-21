@@ -9,38 +9,44 @@
 <h1>Cheesy Croco Tests</h1>
 
 
-<p>There is the question list.</p>
-
 @if (questions == null || answers == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+    <div class="questions">
     <ul> 
         @foreach (var question in questions)
         {
+            
             <li>
                 <td>@question.text</td>  
                 @foreach (var answer in answers)
                 {
-                    if (answer.questionId == question.Id)
+                        if (answer.questionId == question.Id)
                     {
-                        <button class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
-                            @answer.text
-                        </button>
+                        <div class="answer_option">
+                            <button id="answer_option" class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
+                                @answer.text
+                            </button>
+                        </div>
+                        
                     }
                 }
             </li>
         }
     </ul>
-
-    <button class="btn btn-primary">
-        Узнать результат
-        @attemptRates[0]
-        @attemptRates[1]
-        @attemptRates[2]
-    </button>
+    </div>
+    <div class="result">
+        <button class="btn btn-primary">
+            Узнать результат
+            @attemptRates[0]
+            @attemptRates[1]
+            @attemptRates[2]
+        </button>
+    </div>
+    
 }
 
 
@@ -48,14 +54,16 @@ else
 @code {
     private Question[] questions;
     private Answer[] answers;
+    private Result[] results;
     private int[] attemptRates;
 
     protected override async Task OnInitializedAsync()
     {
-        if (questionService.connect() && answerService.connect())
+        if (questionService.connect() && answerService.connect()) //&& resultService.connect())
         {
             questions = await questionService.GetTestAsync();
             answers = await answerService.GetTestAsync();
+            // results = await resultService.GetTestAsync();
             attemptRates = new int[questions.Length];
         }
         else
@@ -68,6 +76,7 @@ else
                     questionIndex = 0
 
                 }).ToArray());
+
         }
     }
 

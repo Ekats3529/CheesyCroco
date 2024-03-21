@@ -23,8 +23,11 @@
     background-position: center;
     border: 1px solid;
     padding-left: 15px;
+    cursor: pointer;
 }
-
+    .test_item:hover {
+        background-color: #f8FAE5;
+    }
 .test_item-bottom {
     display: flex;
     border-top: 1px solid var(--bggray);
@@ -42,7 +45,7 @@
     font-weight: 600;
     background-image: url('images/quiz.svg');
     background-repeat: no-repeat;
-    cursor: default;
+    cursor: pointer;
     display: flex;
     background-position: left center;
 }
@@ -55,7 +58,7 @@
     font-weight: 600;
     background-image: url('images/passes.svg');
     background-repeat: no-repeat;
-    cursor: default;
+    cursor: pointer;
     display: flex;
     background-position: left center;
 }
@@ -68,13 +71,14 @@
     font-weight: 600;
     background-image: url('images/rate.svg');
     background-repeat: no-repeat;
-    cursor: default;
+    cursor: pointer;
     display: flex;
     background-position: left center;
 }
 
 
-.test_item-title h3 a {
+.test_item-title h3 {
+    padding-block-start: 15px;
     padding-left: 30px;
     color: black;
     font-weight: 700;
@@ -83,11 +87,6 @@
     line-height: 30px;
     text-decoration: none;
 }
-
-    .test_item-title h3 a:hover {
-        color: #a68d03;
-        text-decoration: none;
-    }
 
 :root {
     --bgblack: #3A454B;
