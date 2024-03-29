@@ -1,4 +1,8 @@
-﻿.answer_option {
+﻿.checked {
+    color: orange;
+}
+
+.answer_option {
     display: flex;
     justify-content: space-between;
 }

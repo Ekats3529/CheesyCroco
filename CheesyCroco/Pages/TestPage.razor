@@ -2,53 +2,76 @@
 @using CheesyCroco.Data.Models
 @using CheesyCroco.Data.Services
 @inject QuestionService questionService
+@inject ResultService resultService
 @inject AnswerService answerService
 
 <PageTitle>Tests</PageTitle>
 
 <h1>Cheesy Croco Tests</h1>
 
-
-@if (questions == null || answers == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="questions">
-    <ul> 
-        @foreach (var question in questions)
-        {
+@if (sum == -1){
+    @if (questions == null || answers == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div class="questions">
+        <ul> 
+            @foreach (var question in questions)
+            {
             
-            <li>
-                <td>@question.text</td>  
-                @foreach (var answer in answers)
-                {
-                        if (answer.questionId == question.Id)
+                <li>
+                    <td>@question.text</td>  
+                    @foreach (var answer in answers)
                     {
-                        <div class="answer_option">
-                            <button id="answer_option" class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
-                                @answer.text
-                            </button>
-                        </div>
+                            if (answer.questionId == question.Id)
+                        {
+                            <div class="answer_option">
+                                <button id="answer_option" class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
+                                    @answer.text
+                                </button>
+                            </div>
                         
+                        }
                     }
-                }
-            </li>
-        }
-    </ul>
-    </div>
-    <div class="result">
-        <button class="btn btn-primary">
-            Узнать результат
-            @attemptRates[0]
-            @attemptRates[1]
-            @attemptRates[2]
-        </button>
-    </div>
+                </li>
+            }
+        </ul>
+        </div>
+        <div class="result">
+            <button class="btn btn-primary" @onclick="calculateSum">
+                Узнать результат
+                @attemptRates[0]
+                @attemptRates[1]
+                @attemptRates[2]
+            </button>
+        </div>
     
+    }
 }
+else {
+    <h3> Ваш результат</h3>
+    @foreach (var res in results)
+    {
+        if (res.scoreMax >= sum && res.scoreMin <= sum)
+        {
+            <h2> @res.name</h2>
+            <h3> @res.text </h3>
+            break;
+        }
+    }
 
+
+    <h3> Оценитe наш тест </h3>
+
+    <button class="btn btn-primary" onclick="saveNewRate(1)">1</button>
+    <button class="btn btn-primary" onclick="saveNewRate(2)">2</button>
+    <button class="btn btn-primary" onclick="saveNewRate(3)">3</button>
+    <button class="btn btn-primary" onclick="saveNewRate(4)">4</button>
+    <button class="btn btn-primary" onclick="saveNewRate(5)">5</button>
+
+}
 
 
 @code {
@@ -56,14 +79,16 @@ else
     private Answer[] answers;
     private Result[] results;
     private int[] attemptRates;
+    private int sum;
 
     protected override async Task OnInitializedAsync()
     {
-        if (questionService.connect() && answerService.connect()) //&& resultService.connect())
+        sum = -1;
+        if (questionService.connect() && answerService.connect() &&  resultService.connect())
         {
             questions = await questionService.GetTestAsync();
             answers = await answerService.GetTestAsync();
-            // results = await resultService.GetTestAsync();
+            results = await resultService.GetTestAsync();
             attemptRates = new int[questions.Length];
         }
         else
@@ -80,6 +105,14 @@ else
         }
     }
 
+    protected void calculateSum()
+    {
+        foreach (int i in attemptRates) sum += i;
+    }
 
-   
+    protected void saveNewRate()
+    {
+        
+    }
+
 }
