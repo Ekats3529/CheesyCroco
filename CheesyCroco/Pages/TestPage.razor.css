@@ -51,4 +51,106 @@
     border-radius: 12px;
 }
 
+.result_text h3 {
+    background: var(--bgblack);
+    margin-bottom: 10;
+    position: relative;
+    border-radius: 10px;
+    transition: all .1s linear;
+    box-shadow: 0 0 0 1px var(--bgblack);
+    width: 800px;
+    height: 100%;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    background-size: cover;
+    background-position: center;
+    padding-left: 15px;
+}
+
+
+.result_heading h2 {
+    background: var(--bgblack);
+    margin-bottom: 10px;
+    position: relative;
+    transition: all .1s linear;
+    box-shadow: 0 0 0 1px var(--bgblack);
+    width: 1000px;
+    height: 100%;
+    font-size: 20px;
+    display: flex;
+    padding-left: 15px;
+}
+
+.rating-label {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.rating {
+    --dir: right;
+    --fill: gold;
+    --fillbg: rgba(100, 100, 100, 0.15);
+    --star: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.25l-6.188 3.75 1.641-7.031-5.438-4.734 7.172-0.609 2.813-6.609 2.813 6.609 7.172 0.609-5.438 4.734 1.641 7.031z"/></svg>');
+    --stars: 5;
+    --starsize: 3rem;
+    --value: 1;
+    --x: calc(100% * (var(--value) / var(--stars)));
+    block-size: var(--starsize);
+    inline-size: calc(var(--stars) * var(--starsize));
+    appearance: none;
+    background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
+    border-radius: var(--starsize);
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+
+    .rating::-webkit-slider-runnable-track {
+        block-size: 100%;
+        mask: repeat left center/var(--starsize) var(--star);
+        -webkit-mask: repeat left center/var(--starsize) var(--star);
+    }
+
+    .rating::-webkit-slider-thumb {
+        appearance: none;
+        block-size: var(--starsize);
+        border-radius: var(--starsize);
+        cursor: pointer;
+        height: var(--starsize);
+        mask: var(--star);
+        -webkit-mask: var(--star);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: var(--starsize);
+        background: var(--fill);
+    }
+
+    .rating:focus {
+        outline: none;
+    }
+
+        .rating:focus::-webkit-slider-runnable-track {
+            background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
+        }
+
+        .rating:focus::-webkit-slider-thumb {
+            box-shadow: 0 0 0 2px var(--fill), 0 0 4px 2px var(--fill);
+        }
+
+        .rating:focus:active::-webkit-slider-thumb {
+            box-shadow: 0 0 0 2px var(--fill), 0 0 2px 2px var(--fill);
+        }
+
+    .rating:active::-webkit-slider-thumb {
+        background: var(--fill);
+    }
+
+
+
     

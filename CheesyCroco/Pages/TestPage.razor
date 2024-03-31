@@ -52,24 +52,36 @@
 }
 else {
     <h3> Ваш результат</h3>
-    @foreach (var res in results)
-    {
-        if (res.scoreMax >= sum && res.scoreMin <= sum)
+    <div class="result_item">
+        @foreach (var res in results)
         {
-            <h2> @res.name</h2>
-            <h3> @res.text </h3>
-            break;
+            if (res.scoreMax >= sum && res.scoreMin <= sum)
+            {
+                <div class="result_heading">
+                    <h2> @res.name</h2>
+                </div>
+                <div class="result_text">
+                    <h3> @res.text </h3>
+                </div>
+
+                break;
+            }
         }
-    }
+    </div>
+    
 
 
     <h3> Оценитe наш тест </h3>
 
-    <button class="btn btn-primary" onclick="saveNewRate(1)">1</button>
-    <button class="btn btn-primary" onclick="saveNewRate(2)">2</button>
-    <button class="btn btn-primary" onclick="saveNewRate(3)">3</button>
-    <button class="btn btn-primary" onclick="saveNewRate(4)">4</button>
-    <button class="btn btn-primary" onclick="saveNewRate(5)">5</button>
+    <label class="rating-label">
+        <strong>Rating</strong>
+        <input class="rating"
+               max="5"
+               oninput="this.style.setProperty('--value', this.value)"
+               step="1"
+               type="range"
+               value="1">
+    </label>
 
 }
 
