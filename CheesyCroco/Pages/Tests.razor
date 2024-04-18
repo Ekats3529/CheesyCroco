@@ -45,7 +45,8 @@ else
         <div class="tests_row">
             @for (int j = 0; j < 3; j++)
             {
-                <div class="test_item" onclick="location.href='testpage';">
+                string tmp = "testpage/" + @tests[i + j].Id;
+                <div class="test_item" onclick="location.href='@tmp';">
                     <div class="test_item-title">
                         <h3>
                             @tests[i + j].name
@@ -79,6 +80,7 @@ else
     {
         if (testService.connect()){
             tests = await testService.GetTestAsync();
+
         }
         else{
             tests = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Test

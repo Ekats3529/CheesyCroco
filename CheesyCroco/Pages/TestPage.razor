@@ -1,9 +1,10 @@
-﻿@page "/testpage"
+﻿@page "/testpage/{testId}"
 @using CheesyCroco.Data.Models
 @using CheesyCroco.Data.Services
 @inject QuestionService questionService
 @inject ResultService resultService
 @inject AnswerService answerService
+@inject TestService testService
 
 <PageTitle>Tests</PageTitle>
 
@@ -20,27 +21,29 @@
         <ul> 
             @foreach (var question in questions)
             {
-            
-                <li>
-                    <td>@question.text</td>  
-                    @foreach (var answer in answers)
+                    if (question.testId == @TestId!)
                     {
-                            if (answer.questionId == question.Id)
+                    <li>
+                        <td>@question.text</td>  
+                        @foreach (var answer in answers)
                         {
-                            <div class="answer_option">
-                                <button id="answer_option" class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
-                                    @answer.text
-                                </button>
-                            </div>
+                                if (answer.questionId == question.Id)
+                            {
+                                <div class="answer_option">
+                                    <button id="answer_option" class="btn btn-primary" @onclick="@(()=>attemptRates[question.questionIndex] = answer.score)">
+                                        @answer.text
+                                    </button>
+                                </div>
                         
+                            }
                         }
-                    }
-                </li>
+                    </li>
+                }
             }
         </ul>
         </div>
         <div class="result">
-            <button class="btn btn-primary" @onclick="calculateSum">
+            <button class="btn btn-primary" @onclick="CalculateSum">
                 Узнать результат
                 @attemptRates[0]
                 @attemptRates[1]
@@ -51,11 +54,11 @@
     }
 }
 else {
-    <h3> Ваш результат</h3>
+    <h3 style="padding-top: 40px;"> Ваш результат</h3>
     <div class="result_item">
         @foreach (var res in results)
         {
-            if (res.scoreMax >= sum && res.scoreMin <= sum)
+            if (res.testId == @TestId! && res.scoreMax >= sum && res.scoreMin <= sum)
             {
                 <div class="result_heading">
                     <h2> @res.name</h2>
@@ -68,10 +71,8 @@ else {
             }
         }
     </div>
-    
 
-
-    <h3> Оценитe наш тест </h3>
+    <h3 style="padding-top: 40px;"> Оценитe наш тест </h3>
 
     <label class="rating-label">
         <strong>Rating</strong>
@@ -83,6 +84,22 @@ else {
                value="1">
     </label>
 
+    <h3 style="padding-top: 40px;">
+        Посмотрите результаты других людей)
+    </h3>
+    <div class="results">
+        <ul>
+            @foreach (var result in results)
+            {
+                if (result.testId == @TestId!)
+                {
+                    <li>
+                        <td>@result.name - @result.userCount</td>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
 }
 
 
@@ -93,10 +110,16 @@ else {
     private int[] attemptRates;
     private int sum;
 
+    [Parameter]
+    public string? TestId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         sum = -1;
-        if (questionService.connect() && answerService.connect() &&  resultService.connect())
+
+
+
+        if (testService.connect() && questionService.connect() && answerService.connect() && resultService.connect())
         {
             questions = await questionService.GetTestAsync();
             answers = await answerService.GetTestAsync();
@@ -117,14 +140,14 @@ else {
         }
     }
 
-    protected void calculateSum()
+    protected void CalculateSum()
     {
         foreach (int i in attemptRates) sum += i;
     }
 
     protected void saveNewRate()
     {
-        
+        testService.SetNewRating(TestId, 0);
     }
 
 }

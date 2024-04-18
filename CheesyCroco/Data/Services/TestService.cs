@@ -9,6 +9,9 @@ namespace CheesyCroco.Data.Services
     {
 
         public List<Test> tests;
+        IMongoDatabase database;
+        IMongoCollection<Test> collection;
+
         public bool connect()
         {
             const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
@@ -24,10 +27,11 @@ namespace CheesyCroco.Data.Services
             try
             {
                 //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
-                var database = client.GetDatabase("CheesyDB");
-                var collection = database.GetCollection<Test>("Tests");
+                database = client.GetDatabase("CheesyDB");
+                collection = database.GetCollection<Test>("Tests");
 
                 tests = collection.Find(_ => true).ToList();
+
 
                 return true;
             }
@@ -35,10 +39,44 @@ namespace CheesyCroco.Data.Services
             {
                 return false;
             }
+
         }
+
         public Task<Test[]> GetTestAsync()
         {
             return Task.FromResult(tests.ToArray());
         }
+
+        public bool SetNewRating(string testId, int rate) {
+            foreach (var test in tests)
+            {
+                if (test.Id == testId)
+                {
+                    //test.rateNum++;
+                    //test.rateSum += rate;
+
+                    try
+                    {
+
+                        var filter = Builders<Test>.Filter.Eq(test => test.Id, testId);
+                        var update1 = Builders<Test>.Update.Set(test => test.rateNum, test.rateNum + 1);
+                        var update2 = Builders<Test>.Update.Set(test => test.rateSum, test.rateSum + rate);
+                        collection.UpdateOne(filter, update1);
+                        collection.UpdateOne(filter, update2);
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return false;
+            // SAVING DATA
+
+        }
+
+
     }
 }
