@@ -47,7 +47,8 @@ namespace CheesyCroco.Data.Services
             return Task.FromResult(tests.ToArray());
         }
 
-        public bool SetNewRating(string testId, int rate) {
+        public bool SetNewRating(string testId, int rate)
+        {
             foreach (var test in tests)
             {
                 if (test.Id == testId)
@@ -76,6 +77,37 @@ namespace CheesyCroco.Data.Services
             // SAVING DATA
 
         }
+
+        public bool SetNewPassesCount(string testId)
+        {
+            foreach (var test in tests)
+            {
+                if (test.Id == testId)
+                {
+                    //test.rateNum++;
+                    //test.rateSum += rate;
+
+                    try
+                    {
+
+                        var filterTest = Builders<Test>.Filter.Eq(test => test.Id, testId);
+                        var updateTest = Builders<Test>.Update.Set(test => test.passCounter, test.passCounter + 1);
+
+                        collection.UpdateOne(filterTest, updateTest);
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return false;
+            // SAVING DATA
+
+        }
+        
 
 
     }

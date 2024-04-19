@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System;
 using CheesyCroco.Data.Models;
+using CheesyCroco.Pages;
 
 namespace CheesyCroco.Data.Services
 {
@@ -9,6 +10,8 @@ namespace CheesyCroco.Data.Services
     {
 
         public List<Result> results;
+        IMongoDatabase database;
+        IMongoCollection<Result> collection;
         public bool connect()
         {
             const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
@@ -24,8 +27,8 @@ namespace CheesyCroco.Data.Services
             try
             {
                 //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
-                var database = client.GetDatabase("CheesyDB");
-                var collection = database.GetCollection<Result>("Results");
+                database = client.GetDatabase("CheesyDB");
+                collection = database.GetCollection<Result>("Results");
 
                 results = collection.Find(_ => true).ToList();
 
@@ -39,6 +42,34 @@ namespace CheesyCroco.Data.Services
         public Task<Result[]> GetTestAsync()
         {
             return Task.FromResult(results.ToArray());
+        }
+
+        public bool SetNewResultUserCount(string resId)
+        {
+            foreach (var result in results)
+            {
+                if (result.Id == resId)
+                {
+
+                    try
+                    {
+
+                        var filterResult = Builders<Result>.Filter.Eq(result => result.Id, resId);
+                        var updateResult = Builders<Result>.Update.Set(result => result.userCount, result.userCount + 1);
+
+                        collection.UpdateOne(filterResult, updateResult);
+
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return false;
+            // SAVING DATA
+
         }
     }
 }
