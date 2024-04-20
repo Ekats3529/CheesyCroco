@@ -10,6 +10,8 @@
 
 <h1>Cheesy Croco Tests</h1>
 
+
+
 @if (sum == -1){
     @if (questions == null || answers == null)
     {
@@ -45,9 +47,6 @@
         <div class="result">
             <button class="btn btn-primary" @onclick="CalculateSum">
                 Узнать результат
-                @attemptRates[0]
-                @attemptRates[1]
-                @attemptRates[2]
             </button>
         </div>
     
@@ -76,8 +75,29 @@ else {
 
     <h3 style="padding-top: 40px;"> Оценитe наш тест </h3>
 
-    <div class="rating-slider">
-        <input type="range" min="1" max="5" value="3" step="1">
+    <SfRating @bind-Value="currentValue" ShowLabel=true ReadOnly=false ItemsCount="10">
+
+        <LabelTemplate>
+            <span>@context out of 10</span>
+        </LabelTemplate>
+
+        <TooltipTemplate>
+            <span> @context star</span>
+        </TooltipTemplate>
+
+        <EmptyTemplate>
+            <img src="/images/empty.png" width="30" height="30" />
+        </EmptyTemplate>
+
+        <FullTemplate>
+            <img src="/images/full.png" width="30" height="30" />
+        </FullTemplate>
+
+    </SfRating>
+    <div class="result">
+        <button class="btn btn-primary" @onclick="saveNewRate">
+            Оценить
+        </button>
     </div>
 
     <h3 style="padding-top: 40px;">
@@ -96,10 +116,18 @@ else {
             }
         </ul>
     </div>
+
+
+
+
+  
+
 }
 
 
-@code {
+ @code {
+    double currentValue = 10;
+
     private Question[] questions;
     private Answer[] answers;
     private Result[] results;
@@ -143,7 +171,7 @@ else {
 
     protected void saveNewRate()
     {
-        testService.SetNewRating(TestId, 0);
+        testService.SetNewRating(TestId,(int)currentValue);
     }
 
     protected void saveNewPassesCount()

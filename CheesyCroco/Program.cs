@@ -1,6 +1,7 @@
 using CheesyCroco.Data.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddScoped<TestService>();
 builder.Services.AddScoped<AnswerService>();
 builder.Services.AddScoped<QuestionService>();
 builder.Services.AddScoped<ResultService>();
+builder.Services.AddSyncfusionBlazor();
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzIzMjI4MUAzMjM1MmUzMDJlMzBJK0w2QVZJb3IwRm9sdXN0TFNyeVhaT3J4c0lVRituTmhSNDY2dmdHeGgwPQ==");
 
 var app = builder.Build();
 
