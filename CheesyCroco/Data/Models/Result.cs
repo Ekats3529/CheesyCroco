@@ -21,5 +21,7 @@ namespace CheesyCroco.Data.Models
         public int scoreMax { get; set; } = 0;
 
         public int userCount { get; set; } = 0;
+
+        public string imagePath { get; set; } = "";
     }
 }

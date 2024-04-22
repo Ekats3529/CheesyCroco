@@ -53,85 +53,101 @@
     }
 }
 else {
-    <h3 style="padding-top: 40px;"> Ваш результат</h3>
-    <div class="result_item">
-        @foreach (var res in results)
-        {
-            if (res.testId == @TestId! && res.scoreMax >= sum && res.scoreMin <= sum)
+    <h2 style="padding-top: 40px;"> Ваш результат</h2>
+    <div class="result_row">
+        <div class="result_item">
+            @foreach (var res in results)
             {
-                saveNewPassesCount();
-                saveNewResultUserCount(res.Id);
-                <div class="result_heading">
-                    <h2> @res.name</h2>
-                </div>
-                <div class="result_text">
-                    <h3> @res.text </h3>
-                </div>
-
-                break;
-            }
-        }
-    </div>
-
-    <h3 style="padding-top: 40px;"> Оценитe наш тест </h3>
-
-    <SfRating @bind-Value="currentValue" ShowLabel=true ReadOnly=false ItemsCount="10">
-
-        <LabelTemplate>
-            <span>@context out of 10</span>
-        </LabelTemplate>
-
-        <TooltipTemplate>
-            <span> @context star</span>
-        </TooltipTemplate>
-
-        <EmptyTemplate>
-            <img src="/images/empty.png" width="30" height="30" />
-        </EmptyTemplate>
-
-        <FullTemplate>
-            <img src="/images/full.png" width="30" height="30" />
-        </FullTemplate>
-
-    </SfRating>
-
-    <div class="result">
-        <button class="btn btn-primary" @onclick="saveNewRate">
-            Оценить
-        </button>
-    </div>
-
-    <h3 style="padding-top: 40px;">
-        Посмотрите результаты других людей)
-    </h3>
-    <div class="results">
-        <ul>
-            @foreach (var result in results)
-            {
-                if (result.testId == @TestId!)
+                if (res.testId == @TestId! && res.scoreMax >= sum && res.scoreMin <= sum)
                 {
-                    <li>
-                        <td>@result.name - @result.userCount</td>
-                    </li>
+                    saveNewPassesCount();
+                    saveNewResultUserCount(res.Id);
+
+                    <img src="@res.imagePath">
+                    <div class="result_heading">
+                        <h2> @res.name</h2>
+                    </div>
+                    <div class="result_text">
+                        <h3> @res.text </h3>
+                    </div>
+
+                    break;
                 }
             }
-        </ul>
+        </div>
+        <div class="result_plot">
+            <section>
+                  <h2>
+                        Посмотрите результаты других людей)
+                  </h2>
+                  <ul class="chart">
+                      @foreach (var result in results)
+                    {
+                        if (result.testId == @TestId!)
+                        {
+                            <li style="grid-column: span @result.userCount">
+                                @result.name
+                            <span>@result.userCount</span>
+                            </li>
+  
+                        }
+                    }
+                  </ul> 
+            </section>
+        </div>
     </div>
 
+    @if (showRating){
+        <h3 style="padding-top: 40px;"> Оценитe наш тест </h3>
+
+        <SfRating @bind-Value="currentValue" ShowLabel=true ReadOnly=false ItemsCount="10">
+
+            <LabelTemplate>
+                <span>@context out of 10</span>
+            </LabelTemplate>
+
+            <TooltipTemplate>
+                <span> @context stars</span>
+            </TooltipTemplate>
+
+            <EmptyTemplate>
+                <img src="/images/empty.png" width="30" height="30" />
+            </EmptyTemplate>
+
+            <FullTemplate>
+                <img src="/images/full.png" width="30" height="30" />
+            </FullTemplate>
+
+        </SfRating>
+
+        <div class="result">
+            <button class="btn btn-primary" @onclick="saveNewRate">
+                Оценить
+            </button>
+        </div>
+    }
+    else
+    {
+        <h3 style="padding-top: 40px;"> Ваша оценка: @currentValue </h3>
+    }
 
 
 
-  
+
 
 }
 
 
- @code {
-    double currentValue = 10;
+@code {
+    double currentValue = 0;
+
+    private bool showRating = true;
 
     private Question[] questions;
     private Answer[] answers;
     private Result[] results;
+    private Test[] tests;
+    private Test curTest;
     private int[] attemptRates;
     private int sum;
 
@@ -144,12 +160,15 @@ else {
 
 
 
-        if (testService.connect() && questionService.connect() && answerService.connect() && resultService.connect())
+        if (testService.connect() && questionService.connect() && answerService.connect() && resultService.connect() && testService.connect())
         {
             questions = await questionService.GetTestAsync();
             answers = await answerService.GetTestAsync();
             results = await resultService.GetTestAsync();
+            tests = await testService.GetTestAsync();
             attemptRates = new int[questions.Length];
+
+            curTest = getCurrentTestById(TestId);
         }
         else
         {
@@ -165,6 +184,26 @@ else {
         }
     }
 
+    protected Test getCurrentTestById(string TestId)
+    {
+        foreach (Test test in tests)
+        {
+            if (test.Id == TestId!)
+            {
+                return test;
+            }
+        };
+        return new Test
+            {
+                name = "Test name (click on me)",
+                rateNum = 0,
+                rateSum = 1,
+                questionsNum = 1,
+                passCounter = 0,
+                imagePath = ""
+            };
+    }
+
     protected void CalculateSum()
     {
         foreach (int i in attemptRates) sum += i;
@@ -172,6 +211,7 @@ else {
 
     protected void saveNewRate()
     {
+        showRating = false;
         testService.SetNewRating(TestId,(int)currentValue);
     }
 

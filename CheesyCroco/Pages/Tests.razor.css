@@ -8,14 +8,14 @@
 
 .test_item {
     background: var(--bgblack);
-    margin-bottom: 0;
+    margin-bottom: 20px;
     position: relative;
     border-radius: 10px;
     transition: all .1s linear;
     box-shadow: 0 0 0 1px var(--bgblack);
-    width: 400px;
+    width: 500px;
     height: 100%;
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -28,6 +28,15 @@
     .test_item:hover {
         background-color: #f8FAE5;
     }
+
+    .test_item img {
+        margin-top: 30px;
+        margin-left: 30px;
+        width: 400px;
+        height: 400px;
+        display: flex;
+    }
+
 .test_item-bottom {
     display: flex;
     border-top: 1px solid var(--bggray);
@@ -35,6 +44,7 @@
     padding: 10px;
     box-sizing: border-box;
     text-align: match-parent;
+    padding-bottom: 10px;
 }
 
 .test_item-questionsNum {
@@ -82,7 +92,7 @@
     padding-left: 30px;
     color: black;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 22px;
     word-break: break-word;
     line-height: 30px;
     text-decoration: none;

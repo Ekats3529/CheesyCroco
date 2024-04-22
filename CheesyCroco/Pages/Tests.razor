@@ -40,23 +40,27 @@ else
             }
         </tbody>
     </table> *@
-    @for (int i =0; i < tests.Length / 3; i++)
+    @for (int i = 0; i <= tests.Length / 4; i++)
     {
         <div class="tests_row">
-            @for (int j = 0; j < 3; j++)
+            @for (int j = 0; j < 4; j++)
             {
+                @if (i * 4 + j >= tests.Length)
+                {
+                    break;
+                }
                 string tmp = "testpage/" + @tests[i + j].Id;
                 <div class="test_item" onclick="location.href='@tmp';">
+                    <img src="@tests[i * 4 + j].imagePath">
                     <div class="test_item-title">
                         <h3>
-                            @tests[i + j].name
+                            @tests[i * 4 + j].name
                         </h3>
                     </div>
-
                     <div class="test_item-bottom">
-                        <div class="test_item-questionsNum" title="Количество вопросов">@tests[i + j].questionsNum</div>
-                        <div class="test_item-rating" title="Оценка по 10-бальной шкале">@GetTestRate(tests[i + j].rateSum, tests[i + j].rateNum)</div>
-                        <div class="test_item-passes" title="Количество прохождений">@tests[i + j].passCounter</div>
+                        <div class="test_item-questionsNum" title="Количество вопросов">@tests[i * 4 + j].questionsNum</div>
+                        <div class="test_item-rating" title="Оценка по 10-бальной шкале" placeholder="0.00">@GetTestRate(tests[i * 4 + j].rateSum, tests[i * 3 + j].rateNum)</div>
+                        <div class="test_item-passes" title="Количество прохождений">@tests[i * 4 + j].passCounter</div>
                     </div>
                     
                     
@@ -71,9 +75,11 @@ else
 @code {
     private Test[] tests;
 
-    protected double GetTestRate(int a, int b)
+    protected string GetTestRate(int a, int b)
     {
-        return 1.0 * a / b;
+        double number = 1.0 * a / b;
+        string formattedNumber = number.ToString("0.00");
+        return formattedNumber;
     }
 
     protected override async Task OnInitializedAsync()
@@ -89,7 +95,8 @@ else
                     rateNum = 0,
                     rateSum = 1,
                     questionsNum = 1,
-                    passCounter = 0
+                    passCounter = 0,
+                    imagePath = ""
                 }).ToArray());
         }
     }

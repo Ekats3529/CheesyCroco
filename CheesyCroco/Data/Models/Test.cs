@@ -17,5 +17,7 @@ namespace CheesyCroco.Data.Models
         public int questionsNum { get; set; } = 0;
 
         public int passCounter { get; set; } = 0;
+
+        public string imagePath { get; set; } = "";
     }
 }

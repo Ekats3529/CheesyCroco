@@ -1,4 +1,61 @@
-﻿.checked {
+﻿*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.result_plot body {
+    font-family: 'Bitter', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 1.125rem;
+    color: #101820;
+    background-color: #f8f8f8;
+}
+
+.result_plotsection {
+    width: 100%;
+    max-width: 30rem;
+    padding: 1.5rem 1.5rem 2rem;
+    border: 2px solid #a7a8aa;
+    border-radius: 0.5rem;
+    margin: auto;
+}
+
+.result_ploth2 {
+    margin: 0 0 2.5rem;
+}
+
+.result_plot .chart {
+    display: grid;
+    grid-template-columns: auto;
+    gap: .5em 0;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    grid-auto-columns: 1fr;
+}
+
+.result_plot li {
+    background: #ffd100;
+    border: 2px solid white;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem
+}
+
+    .result_plot li span {
+        font-weight: bold;
+    }
+
+
+.checked {
     color: orange;
 }
 
@@ -16,7 +73,7 @@
     font-size: 18px;
     margin: 4px 2px;
     cursor: pointer;
-    width: 150px;
+    width: 300px;
     border-radius: 12px;
 }
 
@@ -53,35 +110,75 @@
 
 .result_text h3 {
     background: var(--bgblack);
-    margin-bottom: 10;
+    margin-bottom: 10px;
     position: relative;
     border-radius: 10px;
     transition: all .1s linear;
     box-shadow: 0 0 0 1px var(--bgblack);
-    width: 800px;
+    width: 1000px;
     height: 100%;
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     justify-content: space-between;
     background-size: cover;
     background-position: center;
     padding-left: 15px;
+    padding-right: 30px;
+    padding-bottom: 10px;
 }
 
 
 .result_heading h2 {
     background: var(--bgblack);
     margin-bottom: 10px;
+    margin-top: 10px;
     position: relative;
     transition: all .1s linear;
     box-shadow: 0 0 0 1px var(--bgblack);
     width: 1000px;
     height: 100%;
-    font-size: 20px;
+    font-size: 22px;
     display: flex;
     padding-left: 15px;
 }
 
+.result_item {
+    background: var(--bgblack);
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 10px;
+    transition: all .1s linear;
+    box-shadow: 0 0 0 1px var(--bgblack);
+    width: 1000px;
+    height: 100%;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid;
+    padding-left: 15px;
+}
+
+.result_item img {
+    margin-top: 30px;
+    margin-left: 30px;
+    width: 400px;
+    height: 400px;
+    display: flex;
+}
+
+.result_row {
+    display: flex;
+    line-height: 1.5;
+    justify-content: normal;
+}
+
+.result_plot {
+    padding-left: 100px;
+    
+}
 
 
 /* Styles for the slider container */
