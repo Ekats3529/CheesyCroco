@@ -143,10 +143,10 @@ else {
 
     private bool showRating = true;
 
-    private Question[] questions;
-    private Answer[] answers;
-    private Result[] results;
-    private Test[] tests;
+    private List<Question> questions;
+    private List<Answer> answers;
+    private List<Result> results;
+    private List<Test> tests;
     private Test curTest;
     private int[] attemptRates;
     private int sum;
@@ -157,31 +157,12 @@ else {
     protected override async Task OnInitializedAsync()
     {
         sum = -1;
+        questions = questionService.GetAll();
+        answers = answerService.GetAll();
+        results = resultService.GetAll();
+        tests = testService.GetAll();
+        attemptRates = new int[questions.Count()];
 
-
-
-        if (testService.connect() && questionService.connect() && answerService.connect() && resultService.connect() && testService.connect())
-        {
-            questions = await questionService.GetTestAsync();
-            answers = await answerService.GetTestAsync();
-            results = await resultService.GetTestAsync();
-            tests = await testService.GetTestAsync();
-            attemptRates = new int[questions.Length];
-
-            curTest = getCurrentTestById(TestId);
-        }
-        else
-        {
-            questions = await Task.FromResult(Enumerable.Range(1, 5).Select(index => new Question
-                {
-                    text = "",
-                    testId = "",
-                    answersNum = 0,
-                    questionIndex = 0
-
-                }).ToArray());
-
-        }
     }
 
     protected Test getCurrentTestById(string TestId)
@@ -212,17 +193,25 @@ else {
     protected void saveNewRate()
     {
         showRating = false;
-        testService.SetNewRating(TestId,(int)currentValue);
+
+        var tmp = testService.GetById(TestId);
+        tmp.rateNum++;
+        tmp.rateSum += (int)currentValue;
+        testService.SaveOrUpdate(tmp);
     }
 
     protected void saveNewPassesCount()
     {
-        testService.SetNewPassesCount(TestId);
+        var tmp = testService.GetById(TestId);
+        tmp.passCounter++;
+        testService.SaveOrUpdate(tmp);
     }
 
     protected void saveNewResultUserCount(string resId)
     {
-        resultService.SetNewResultUserCount(resId);
+        var tmp = resultService.GetById(resId);
+        tmp.userCount++;
+        resultService.SaveOrUpdate(tmp);
     }
 
 }

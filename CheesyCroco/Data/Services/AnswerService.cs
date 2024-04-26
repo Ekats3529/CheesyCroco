@@ -2,28 +2,20 @@
 using MongoDB.Bson;
 using System;
 using CheesyCroco.Data.Models;
+using CheesyCroco.Settings;
+using Microsoft.Extensions.Options;
 
 namespace CheesyCroco.Data.Services
 {
-    public class AnswerService
+    public class AnswerService : IService<Answer>
     {
-
+        /*
         public List<Answer> answers;
-        public bool connect()
+
+        public bool getCollection()
         {
-            const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
-
-            var settings = MongoClientSettings.FromConnectionString(connectionUri);
-            // Set the ServerApi field of the settings object to set the version of the Stable API on the client
-            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-            // Create a new client and connect to the server
-            var client = new MongoClient(settings);
-            //
-
-            // Send a ping to confirm a successful connection
             try
             {
-                //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
                 var database = client.GetDatabase("CheesyDB");
                 var collection = database.GetCollection<Answer>("Answers");
 
@@ -39,6 +31,40 @@ namespace CheesyCroco.Data.Services
         public Task<Answer[]> GetTestAsync()
         {
             return Task.FromResult(answers.ToArray());
+        }
+        */
+
+        private IMongoCollection<Answer> _answers;
+
+        public AnswerService(IOptions<MongoDBSettings> mongoDbSettings)
+        {
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _answers = database.GetCollection<Answer>("Answers");
+        }
+
+        public List<Answer> GetAll()
+        {
+            return _answers.Find(FilterDefinition<Answer>.Empty).ToList();
+        }
+
+        public Answer GetById(string id)
+        {
+            return _answers.Find(x => x.Id == id).FirstOrDefault();
+        }
+
+        public void SaveOrUpdate(Answer obj)
+        {
+            var answerObj = _answers.Find(x => x.Id == obj.Id).FirstOrDefault();
+
+            if (answerObj == null)
+            {
+                _answers.InsertOne(obj);
+            }
+            else
+            {
+                _answers.ReplaceOne(x => x.Id == obj.Id, obj);
+            }
         }
     }
 }

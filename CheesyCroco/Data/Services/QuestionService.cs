@@ -2,28 +2,19 @@
 using MongoDB.Bson;
 using System;
 using CheesyCroco.Data.Models;
+using CheesyCroco.Settings;
+using Microsoft.Extensions.Options;
 
 namespace CheesyCroco.Data.Services
 {
-    public class QuestionService
+    public class QuestionService : IService<Question>
     {
-
+        /*
         public List<Question> questions;
-        public bool connect()
+        public bool getCollection()
         {
-            const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
-
-            var settings = MongoClientSettings.FromConnectionString(connectionUri);
-            // Set the ServerApi field of the settings object to set the version of the Stable API on the client
-            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-            // Create a new client and connect to the server
-            var client = new MongoClient(settings);
-            //
-
-            // Send a ping to confirm a successful connection
             try
             {
-                //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
                 var database = client.GetDatabase("CheesyDB");
                 var collection = database.GetCollection<Question>("Questions");
 
@@ -39,6 +30,40 @@ namespace CheesyCroco.Data.Services
         public Task<Question[]> GetTestAsync()
         {
             return Task.FromResult(questions.ToArray());
+        }
+        */
+
+        private IMongoCollection<Question> _questions;
+
+        public QuestionService(IOptions<MongoDBSettings> mongoDbSettings)
+        {
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _questions = database.GetCollection<Question>("Questions");
+        }
+
+        public List<Question> GetAll()
+        {
+            return _questions.Find(FilterDefinition<Question>.Empty).ToList();
+        }
+
+        public Question GetById(string id)
+        {
+            return _questions.Find(x => x.Id == id).FirstOrDefault();
+        }
+
+        public void SaveOrUpdate(Question obj)
+        {
+            var questionObj = _questions.Find(x => x.Id == obj.Id).FirstOrDefault();
+
+            if (questionObj == null)
+            {
+                _questions.InsertOne(obj);
+            }
+            else
+            {
+                _questions.ReplaceOne(x => x.Id == obj.Id, obj);
+            }
         }
     }
 }

@@ -2,31 +2,54 @@
 using MongoDB.Bson;
 using System;
 using CheesyCroco.Data.Models;
-using CheesyCroco.Pages;
+using CheesyCroco.Settings;
+using Microsoft.Extensions.Options;
 
 namespace CheesyCroco.Data.Services
 {
-    public class ResultService
+    public class ResultService : IService<Result>
     {
+        private IMongoCollection<Result> _results;
 
+        public ResultService(IOptions<MongoDBSettings> mongoDbSettings)
+        {
+            var client = new MongoClient(mongoDbSettings.Value.ConnectionString);
+            var database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
+            _results = database.GetCollection<Result>("Results");
+        }
+
+        public List<Result> GetAll()
+        {
+            return _results.Find(FilterDefinition<Result>.Empty).ToList();
+        }
+
+        public Result GetById(string id)
+        {
+            return _results.Find(x => x.Id == id).FirstOrDefault();
+        }
+
+        public void SaveOrUpdate(Result obj)
+        {
+            var resultObj = _results.Find(x => x.Id == obj.Id).FirstOrDefault();
+
+            if (resultObj == null)
+            {
+                _results.InsertOne(obj);
+            }
+            else
+            {
+                _results.ReplaceOne(x => x.Id == obj.Id, obj);
+            }
+        }
+
+        /*
         public List<Result> results;
         IMongoDatabase database;
         IMongoCollection<Result> collection;
-        public bool connect()
+        public bool getCollection()
         {
-            const string connectionUri = "mongodb+srv://user:passwordpassword@cluster.ncff76h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster";
-
-            var settings = MongoClientSettings.FromConnectionString(connectionUri);
-            // Set the ServerApi field of the settings object to set the version of the Stable API on the client
-            settings.ServerApi = new ServerApi(ServerApiVersion.V1);
-            // Create a new client and connect to the server
-            var client = new MongoClient(settings);
-            //
-
-            // Send a ping to confirm a successful connection
             try
             {
-                //var result = client.GetDatabase("CheesyDB").RunCommand<BsonDocument>(new BsonDocument("ping", 1));
                 database = client.GetDatabase("CheesyDB");
                 collection = database.GetCollection<Result>("Results");
 
@@ -71,5 +94,6 @@ namespace CheesyCroco.Data.Services
             // SAVING DATA
 
         }
+        */
     }
 }
